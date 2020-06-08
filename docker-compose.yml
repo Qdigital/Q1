@@ -1,0 +1,57 @@
+version: "3.0"
+services:
+  app:
+    image: project-open-data-dashboard_app:latest
+    depends_on:
+      - database
+    environment:
+      APP_DIR: /var/www/app 
+      VCAP_APPLICATION: >
+        {
+          "fake": "yes",
+          "application_name": "app",
+          "name": "app",
+          "uris": [
+            "localhost:8000"
+          ]
+        }
+      VCAP_SERVICES: >
+        {
+          "aws-rds": [
+            {
+              "name": "database",
+              "credentials": {
+                "db_name": "dashboard",
+                "host": "database",
+                "password": "mysql",
+                "port": "3306",
+                "username": "root"
+              }
+            }
+          ],
+          "user-provided": [
+            {
+              "name": "secrets",
+              "credentials": {
+                "ENCRYPTION_KEY": "not-a-real-key-from-vcap"
+              }
+            }
+          ]
+        }
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/app:delegated
+      - uploads:/var/www/app/uploads
+
+  database:
+    image: mysql:5.7
+    volumes:
+      - database_data:/var/lib/mysql:delegated
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+      MYSQL_DATABASE: dashboard
+
+volumes:
+  database_data:
+  uploads:
