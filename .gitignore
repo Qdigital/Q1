@@ -1,0 +1,24 @@
+*/config/development
+*/logs/log-*.php
+*/logs/!index.html
+*/cache/*
+*/cache/!index.html
+csv/*
+
+.DS_Store
+.env*
+
+downloads/*
+uploads/*
+archive/error_log/*
+archive/datajson/20*
+archive/digitalstrategy/20*
+archive/datajson-lines/*
+archive/curl_header
+
+composer.phar
+/vendor
+
+# Intellij
+.idea
+
